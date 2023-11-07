@@ -19,6 +19,20 @@ paths:
           schema:
             type: string
         #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        - in : query
+          name: startDate
+          description: StartDate of release
+          required: false
+          schema:
+            type: string
+            format: date
+        - in : query
+          name: endDate of release
+          description:  EndDate of release
+          required: false
+          schema:
+            type: string
+            format: date
       responses:
         200:
           description: The list of filtered books
@@ -49,6 +63,59 @@ paths:
                   $ref: '#/components/schemas/Book'
   /authors:
   #TODO2: complete GET (can be filtered by name) - PUT - DELETE
+        get:
+          summary: Get all authors
+          operationId: getAuthors
+          parameters:
+            - in: query
+              name: authorName
+              description: Filter authors by name
+              required: false
+              schema:
+                type: string
+          responses:
+            200:
+              description: List of authors
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Author'
+        put:
+          summary: Create or update a list of authors
+          operationId: UpdateAuthors
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Author'
+          responses:
+            200:
+              description:  list of created or updated authors
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Author'
+
+        delete:
+          summary: Delete author by ID
+          operationId: deleteAuthor
+          parameters:
+            - in: path
+              name: authorId
+              description: ID of the author to delete
+              required: true
+              schema:
+                type: string
+          responses:
+            202:
+              description: Author deleted successfully
+
 components:
   schemas:
     Book:
