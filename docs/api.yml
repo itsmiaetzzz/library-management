@@ -237,6 +237,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/CrupdateBook'
         - $ref: '#/components/schemas/Author'
+        - $ref: '#/components/schemas/Topic'
     CrupdateBook:
       type: object
       properties:
