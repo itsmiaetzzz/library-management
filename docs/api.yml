@@ -347,13 +347,25 @@ components:
               type: string
         - $ref: "#/components/schemas/CrupdateTopic"
      AuthorTopics:
-      type: object
-      allOf:
-        - allOf:
-            - $ref: "#/components/schemas/CrupdateAuthors"
-      properties:
-        topic:
-          type: array
-          items:
-            $ref: "#/components/schemas/Topic"
+        type: object
+        allOf:
+          - allOf:
+              - $ref: "#/components/schemas/CrupdateAuthors"
+        properties:
+          topic:
+            type: array
+            items:
+              $ref: "#/components/schemas/Topic"
+     CrupdateAuthors:
+        type: object
+        properties:
+          authorName:
+            type: string
+          sex:
+            $ref: "#/components/schemas/Sex"
+    Sex:
+      type: string
+      enum:
+        - M
+        - F
    
