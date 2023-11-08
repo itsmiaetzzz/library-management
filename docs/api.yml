@@ -230,6 +230,43 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Topic'
+   put:
+      tags:
+        - "Topics"
+      summary: Create or update a list of topic
+      operationId: crupdateTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CrupdateTopic"
+      responses:
+        200:
+          description: The list of created or updated topic
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"
+  /topics/{topicId}:
+      delete:
+          tags:
+            - "Topics"
+          summary: Remove a topic by id
+          operationId: deleteTopic
+          parameters:
+            - in: path
+              name: id
+              description: Remove topic by given id
+              required: true
+              schema:
+                type: string
+          responses:
+            200:
+              description: Topic deleted successfully      
 
 components:
   schemas:
