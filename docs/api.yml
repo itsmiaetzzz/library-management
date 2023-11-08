@@ -272,10 +272,17 @@ components:
       required:
         - "bookId"
         - "authorId"
+    CrupdateTopic:
+      type: object
+      properties:
+        topicName:
+          type: string
     Topic:
-        type: string
-        enum:
-          - ROMANCE
-          - COMEDY
-          - OTHER
+      type: object
+      allOf:
+        - properties:
+            id:
+              type: string
+        - $ref: "#/components/schemas/CrupdateTopic"
+
    
