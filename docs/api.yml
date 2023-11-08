@@ -243,4 +243,10 @@ components:
       required:
         - "bookId"
         - "authorId"
+    Topic:
+        type: string
+        enum:
+          - ROMANCE
+          - COMEDY
+          - OTHER
    
