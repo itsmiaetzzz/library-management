@@ -266,8 +266,25 @@ paths:
                 type: string
           responses:
             200:
-              description: Topic deleted successfully      
+              description: Topic deleted successfully
 
+    /authorTopics:
+      get:
+        tags:
+          - "Author"
+        summary: Get all authorTopics
+        description: The returned authors and list topics.
+        operationId: getAuthorTopics
+        responses:
+          200:
+            description: The list of authors with list topic
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AuthorTopics'
+  
 components:
   schemas:
     Book:
@@ -329,5 +346,14 @@ components:
             id:
               type: string
         - $ref: "#/components/schemas/CrupdateTopic"
-
+     AuthorTopics:
+      type: object
+      allOf:
+        - allOf:
+            - $ref: "#/components/schemas/CrupdateAuthors"
+      properties:
+        topic:
+          type: array
+          items:
+            $ref: "#/components/schemas/Topic"
    
