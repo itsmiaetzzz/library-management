@@ -161,20 +161,20 @@ paths:
         200:
           description: Topic assigned to the book successfully
   /books/authors:
-    put:
-      summary: Update book-author relationships
-      operationId: updateBookAuthorRelationships
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/UpdateBookAuthor'
-      responses:
-        200:
-          description: Book-author relationships updated successfully
-    /authors/{page}/{pageSize}:
+      put:
+        summary: Update book-author relationships
+        operationId: updateBookAuthorRelationships
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateBookAuthor'
+        responses:
+          200:
+            description: Book-author relationships updated successfully
+  /authors/{page}/{pageSize}:
       get:
         summary: Get paginated list of authors
         operationId: getAuthors
@@ -202,7 +202,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/Author'
-      /topics:
+  /topics:
         get:
           summary: Get paginated list of topics
           operationId: getTopics
@@ -230,27 +230,27 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Topic'
-   put:
-      tags:
-        - "Topics"
-      summary: Create or update a list of topic
-      operationId: crupdateTopic
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/CrupdateTopic"
-      responses:
-        200:
-          description: The list of created or updated topic
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Topic"
+        put:
+              tags:
+                - "Topics"
+              summary: Create or update a list of topic
+              operationId: crupdateTopic
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/CrupdateTopic"
+              responses:
+                200:
+                  description: The list of created or updated topic
+                  content:
+                    application/json:
+                      schema:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Topic"
   /topics/{topicId}:
       delete:
           tags:
@@ -268,7 +268,7 @@ paths:
             200:
               description: Topic deleted successfully
 
-    /authorTopics:
+  /authorTopics:
       get:
         tags:
           - "Author"
@@ -299,7 +299,7 @@ components:
             Topic:
               allOf:
                 - $ref: "#/components/schemas/Topic"
-        - $ref: "#/components/schemas/CrupdateBooks"
+                - $ref: "#/components/schemas/CrupdateBook"
     CrupdateBook:
       type: object
       properties:
@@ -346,7 +346,7 @@ components:
             id:
               type: string
         - $ref: "#/components/schemas/CrupdateTopic"
-     AuthorTopics:
+    AuthorTopics:
         type: object
         allOf:
           - allOf:
@@ -356,7 +356,7 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/Topic"
-     CrupdateAuthors:
+    CrupdateAuthors:
         type: object
         properties:
           authorName:
@@ -368,4 +368,5 @@ components:
       enum:
         - M
         - F
+   
    
