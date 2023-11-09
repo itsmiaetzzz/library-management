@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.2.0
-  description: STD22033
+  version: 1.3.0
+  description: STD22055
 servers:
   - url: https://library.com
 paths:
@@ -258,7 +258,68 @@ paths:
             type: string
       responses:
         200:
-          description: Topic deleted successfully
+          description: Topic deleted successfull
+  /import/book:
+    post:
+      summary: Import book from JSON/excel file
+      consumes:
+        - application/json
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImportDataBook"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /import/author:
+    post:
+      summary: Import author from Excel or JSON file
+      consumes:
+        - application/json
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      parameters:
+        - name: file
+          in: formData
+          required: true
+          type: file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImportDataAuthor"
+      responses:
+       '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
 components:
   schemas:
     ApiResponse:
