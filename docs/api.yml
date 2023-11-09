@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.3.0
-  description: STD22055
+  version: 1.2.0
+  description: STD22033
 servers:
   - url: https://library.com
 paths:
@@ -52,6 +52,15 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/CrupdateBooks"
+      responses: 
+        200:
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /books/{bookId}:
     delete:
       tags:
@@ -100,6 +109,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SuccessfulResponse"
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
     #TODO2: complete GET (can be filtered by name) - PUT - DELETE
     put:
       tags:
@@ -197,7 +212,61 @@ paths:
           $ref: '#/components/responses/403'
         500:
           $ref: '#/components/responses/500'
-      
+  /import/book:
+    post:
+      summary: Import book from JSON/excel file
+      consumes:
+        - application/json
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImportDataBook"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /import/author:
+    post:
+      summary: Import author from Excel or JSON file
+      consumes:
+        - application/json
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      parameters:
+        - name: file
+          in: formData
+          required: true
+          type: file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImportDataAuthor"
+      responses:
+        '200':
+          description: Succès
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /topics:
     get:
       tags:
@@ -258,68 +327,8 @@ paths:
             type: string
       responses:
         200:
-          description: Topic deleted successfull
-  /import/book:
-    post:
-      summary: Import book from JSON/excel file
-      consumes:
-        - application/json
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImportDataBook"
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        400:
-          $ref: '#/components/responses/400'
-        403:
-          $ref: '#/components/responses/403'
-        500:
-          $ref: '#/components/responses/500'
-  /import/author:
-    post:
-      summary: Import author from Excel or JSON file
-      consumes:
-        - application/json
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-      parameters:
-        - name: file
-          in: formData
-          required: true
-          type: file
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ImportDataAuthor"
-      responses:
-       '200':
-          description: Succès
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-        400:
-          $ref: '#/components/responses/400'
-        403:
-          $ref: '#/components/responses/403'
-        500:
-          $ref: '#/components/responses/500'
+          description: Topic deleted successfully
+
 components:
   schemas:
     ApiResponse:
@@ -454,7 +463,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Topic"
-          ImportDataBook:
+    ImportDataBook:
       type: object
       oneOf:
         - $ref: "#/components/schemas/ImportBookJSON"
@@ -498,12 +507,12 @@ components:
         type: integer
         default: 1
     queryPageSize:
-       in: query
-       name: QueryPageSize
-       schema:
-         type: integer
-         default: 50
-        pathPage:
+      in: query
+      name: QueryPageSize
+      schema:
+        type: integer
+        default: 50
+    pathPage:
       in: path
       name: PathPage
       schema:
@@ -540,3 +549,4 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/InternalServerError"
+
