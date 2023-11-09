@@ -393,6 +393,41 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Topic"
+          ImportDataBook:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/ImportBookJSON"
+        - $ref: "#/components/schemas/ImportBookExcel"
+    ImportBookJSON:
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            $ref: "#/components/schemas/Book"
+    ImportBookExcel:
+      type: object
+      properties:
+        excelFile:
+          type: string
+    ImportDataAuthor:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/ImportAuthorJSON"
+        - $ref: "#/components/schemas/ImportAuthorExcel"
+    ImportAuthorJSON:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Author"
+    ImportAuthorExcel:
+      type: object
+      properties:
+        excelFile:
+          type: string
+          format: binary
 
   parameters:
     queryPage:
