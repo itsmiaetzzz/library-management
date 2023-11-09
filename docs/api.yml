@@ -345,4 +345,16 @@ components:
        schema:
          type: integer
          default: 50
+        pathPage:
+      in: path
+      name: PathPage
+      schema:
+        type: integer
+        default: 1
+    pathPageSize:
+      in: path
+      name: PathPageSize
+      schema:
+        type: integer
+        default: 50
 
