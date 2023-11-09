@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.1.0
+  version: 1.2.0
   description: STD22033
 servers:
   - url: https://library.com
@@ -65,6 +65,15 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        200:
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
 
   /authors:
     get:
@@ -106,8 +115,13 @@ paths:
                 $ref: "#/components/schemas/Author"
       responses:
         200:
-          $ref: ''
-
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /authors/{authorId}:
     delete:
       tags:
@@ -121,7 +135,15 @@ paths:
           required: true
           schema:
             type: string
-
+      responses:
+        200:
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
   /books/authors:
     put:
       tags:
@@ -145,7 +167,13 @@ paths:
                   - "authorId"
       responses:
         200:
-          description: Updated books with authors
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
 
   /books/topics:
     put:
@@ -162,8 +190,14 @@ paths:
                 $ref: "#/components/schemas/UpdateBookTopic"
       responses:
         200:
-        
-
+          $ref: '#/components/schemas/SuccessfulResponse'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+      
   /topics:
     get:
       tags:
@@ -239,6 +273,34 @@ components:
               type: string
         body:
           type: object
+    SuccessfulResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+    badRequest:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+    forbiddenOperation:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: object
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: object
     CrupdateTopic:
       type: object
       properties:
@@ -357,4 +419,28 @@ components:
       schema:
         type: integer
         default: 50
-
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessfulResponse"
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/badRequest"
+    '403':
+      description: Forbidden operation
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/forbiddenOperation"
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InternalServerError"
