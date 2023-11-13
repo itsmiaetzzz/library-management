@@ -397,6 +397,8 @@ components:
           type: string
         reference:
           type: string
+        role :
+          type: string
     Activity:
       type: object
       properties:
