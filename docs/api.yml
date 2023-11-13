@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.2.0
+  version: 1.3.0
   description: STD22055
 servers:
   - url: https://library.com
@@ -190,28 +190,6 @@ paths:
         500:
           $ref: '#/components/responses/500'
 
-  /books/topics:
-    put:
-      tags:
-        - Books
-      summary: Modify topics for books by Id
-      operationId: updateBooksWithTopics
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/UpdateBookTopic"
-      responses:
-        200:
-          $ref: '#/components/schemas/SuccessfulResponse'
-        400:
-          $ref: '#/components/responses/400'
-        403:
-          $ref: '#/components/responses/403'
-        500:
-          $ref: '#/components/responses/500'
   /import/book:
     post:
       summary: Import book from JSON/excel file
@@ -267,123 +245,57 @@ paths:
                 properties:
                   message:
                     type: string
-  /topics:
-    get:
-      tags:
-        - "Topics"
-      summary: Get all topics
-      description: The returned topics are ordered by name.
-      operationId: getTopics
-      parameters:
-        - in: query
-          name: name
-          description: Filter return topic by given name
-          required: false
-          schema:
-            type: string
-      responses:
-        200:
-          description: The list of filtered topics
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Topic"
-    put:
-      tags:
-        - "Topics"
-      summary: Create or update a list of topic
-      operationId: crupdateTopic
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/CrupdateTopic"
-      responses:
-        200:
-          description: The list of created or updated topic
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Topic"
-
-  /topics/{topicId}:
-    delete:
-      tags:
-        - "Topics"
-      summary: Remove a topic by id
-      operationId: deleteTopic
-      parameters:
-        - in: path
-          name: id
-          description: Remove topic by given id
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: Topic deleted successfully
-
-components:
-  schemas:
-    ApiResponse:
+schemas:
+    ResponseBodyTemplate:
       type: object
       properties:
         status:
-          type: object
-          properties:
-            code:
-              type: object
-            message:
-              type: string
+          $ref: '#/components/schemas/ResponsesStatus'
         body:
           type: object
-    SuccessfulResponse:
-      allOf:
-        - $ref: '#/components/schemas/ApiResponse'
-        - type: object
-          properties:
-            data:
-              type: object
-    badRequest:
-      allOf:
-        - $ref: '#/components/schemas/ApiResponse'
-        - type: object
-          properties:
-            data:
-              type: object
-    forbiddenOperation:
-      allOf:
-        - $ref: '#/components/schemas/ApiResponse'
-        - type: object
-          properties:
-            data:
-              type: object
-    InternalServerError:
-      allOf:
-        - $ref: '#/components/schemas/ApiResponse'
-        - type: object
-          properties:
-            data:
-              type: object
-    CrupdateTopic:
+    ResponsesStatus:
       type: object
       properties:
-        topicName:
+        code:
+          type: integer
+          example: 200
+        message:
           type: string
-    Topic:
-      type: object
+    BadRequest:
       allOf:
-        - properties:
-            id:
-              type: string
-        - $ref: "#/components/schemas/CrupdateTopic"
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 400
+          message: BAD REQUEST
+        body: {}
 
+    ForbiddenOperation:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 403
+          message: FORBIDDEN
+        body: {}
+
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 500
+          message: Internal Server Error
+        body: {}
+    BookListBody:
+      description:  List of books
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/Book'
     CrupdateBooks:
       type: object
       properties:
@@ -441,28 +353,6 @@ components:
       required:
         - "bookId"
         - "authorId"
-
-    UpdateBookTopic:
-      type: object
-      properties:
-        bookId:
-          type: string
-        topicId:
-          type: string
-      required:
-        - "bookId"
-        - "authorId"
-
-    AuthorTopics:
-      type: object
-      allOf:
-        - allOf:
-            - $ref: "#/components/schemas/CrupdateAuthors"
-      properties:
-        topic:
-          type: array
-          items:
-            $ref: "#/components/schemas/Topic"
     ImportDataBook:
       type: object
       oneOf:
