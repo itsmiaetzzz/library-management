@@ -44,6 +44,8 @@ paths:
       tags:
         - "Books"
       summary: Create or update a list of books
+      security:
+        - oauth2: [ 'write' ]
       operationId: crupdateBooks
       requestBody:
         content:
@@ -64,6 +66,8 @@ paths:
       tags:
         - "Books"
       summary: Remove books
+      security:
+        - oauth2: [ 'write' ]
       operationId: deleteBooks
       parameters:
         - in: query
@@ -118,6 +122,8 @@ paths:
       tags:
         - "Authors"
       summary: Create or update authors
+      security:
+        - oauth2: [ 'write' ]
       operationId: crupdateAuthors
       requestBody:
         content:
@@ -139,6 +145,8 @@ paths:
       tags:
         - "Authors"
       summary: Delete authors
+      security:
+        - oauth2: [ 'write' ]
       operationId: deleteAuthors
       parameters:
         - in: path
@@ -160,6 +168,8 @@ paths:
       tags:
         - Books
       summary: Modify authors for a books by Id
+      security:
+        - oauth2: [ 'write' ]
       operationId: updateBooks
       requestBody:
         content:
@@ -187,6 +197,8 @@ paths:
   /import/book:
     post:
       summary: Import book from JSON/excel file
+      security:
+        - oauth2: [ 'write' ]
       requestBody:
         required: true
         content:
@@ -215,6 +227,8 @@ paths:
         - Books
       summary: Get borrowed books
       description: Retrieve the list of books currently borrowed.
+      security:
+        - oauth2: [ 'write' ]
       operationId: getBorrowedBooks
       responses:
         200:
@@ -231,6 +245,8 @@ paths:
         - Books
       summary: Get available books
       description: Retrieve the list of books currently available for borrowing.
+      security:
+        - oauth2: [ 'write' ]
       operationId: getAvailableBooks
       responses:
         200:
@@ -288,6 +304,8 @@ paths:
       - Visitors
     summary: Borrow a book
     description: Allows a visitor to borrow a book from the library.
+    security:
+        - oauth2: [ 'write' ]
     operationId: borrowBook
     parameters:
       - name: visitorId
@@ -316,6 +334,8 @@ paths:
     tags:
       - Visitors
     summary: Return a book
+    security:
+        - oauth2: [ 'write' ]
     description: Allows a visitor to return a book to the library.
     operationId: returnBook
     parameters:
@@ -346,6 +366,8 @@ paths:
       tags:
         - Visitors
       summary: Visitor Activities
+      security:
+        - oauth2: [ 'write' ]
       description: Get borrow and return activities of the specified visitor.
       operationId: getVisitorActivities
       parameters:
