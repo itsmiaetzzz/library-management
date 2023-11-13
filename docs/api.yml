@@ -228,7 +228,91 @@ paths:
                 properties:
                   message:
                     type: string
-  
+    /visitors:
+    get:
+      tags:
+        - Visitors
+      summary: Get all visitors
+      description: Retrieve all registered visitors
+      operationId: getVisitors
+      responses:
+        200:
+          description: A list of all registered visitors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Visitor'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+  /visitors/{visitorId}/borrow/{bookId}:
+  post:
+    tags:
+      - Visitors
+    summary: Borrow a book
+    description: Allows a visitor to borrow a book from the library.
+    security:
+      - admin_key: []
+    operationId: borrowBook
+    parameters:
+      - name: visitorId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Visitor's identifier
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Book's identifier to borrow
+    responses:
+      200:
+        description: Book borrowed successfully
+      400:
+        $ref: '#/components/responses/400'
+      403:
+        $ref: '#/components/responses/403'
+      500:
+        $ref: '#/components/responses/500'
+/visitors/{visitorId}/return/{bookId}:
+  post:
+    tags:
+      - Visitors
+    summary: Return a book
+    security:
+      - oauth2: [ 'write' ]
+    description: Allows a visitor to return a book to the library.
+    operationId: returnBook
+    parameters:
+      - name: visitorId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Visitor's identifier
+      - name: bookId
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Book's identifier to return
+    responses:
+      200:
+        description: Book returned successfully
+      400:
+        $ref: '#/components/responses/400'
+      403:
+        $ref: '#/components/responses/403'
+      500:
+        $ref: '#/components/responses/500'
+
 components:
   schemas:
     Visitors:
