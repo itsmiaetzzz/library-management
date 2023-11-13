@@ -192,10 +192,7 @@ paths:
 
   /import/book:
     post:
-      summary: Import book from JSON/excel file
-      consumes:
-        - application/json
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      summary: Import book from JSON/excel file     
       requestBody:
         required: true
         content:
@@ -221,9 +218,6 @@ paths:
   /import/author:
     post:
       summary: Import author from Excel or JSON file
-      consumes:
-        - application/json
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
       parameters:
         - name: file
           in: formData
@@ -370,6 +364,8 @@ schemas:
       properties:
         excelFile:
           type: string
+          example: " application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          
     ImportDataAuthor:
       type: object
       oneOf:
@@ -388,6 +384,7 @@ schemas:
         excelFile:
           type: string
           format: binary
+          example: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
   parameters:
     queryPage:
