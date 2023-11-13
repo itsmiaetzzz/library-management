@@ -32,7 +32,7 @@ paths:
         - $ref: '#/components/parameters/queryPageSize'
       responses:
         200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+          $ref: '#/components/responses/BookList_200'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -52,9 +52,9 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/CrupdateBooks"
-      responses: 
+       responses:
         200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+          $ref: '#/components/responses/BookList_200'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -76,7 +76,7 @@ paths:
             type: string
       responses:
         200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+          $ref: '#/components/responses/BookList_200'
         400:
           $ref: '#/components/responses/400'
         403:
