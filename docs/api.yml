@@ -587,6 +587,15 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Book'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.com/oauth/authorize
+          scopes:
+            read: Read access
+            write: Write access
   parameters:
     queryPage:
       in: query
