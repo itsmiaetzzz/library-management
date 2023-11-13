@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.3.0
+  version: 1.4.0
   description: STD22055
 servers:
   - url: https://library.com
@@ -52,9 +52,7 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/CrupdateBooks"
-       responses:
-        200:
-          $ref: '#/components/responses/BookList_200'
+      responses:
         400:
           $ref: '#/components/responses/400'
         403:
@@ -76,7 +74,7 @@ paths:
             type: string
       responses:
         200:
-          $ref: '#/components/responses/BookList_200'
+          $ref: '#/components/schemas/BookListBody'
         400:
           $ref: '#/components/responses/400'
         403:
@@ -108,7 +106,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/SuccessfulResponse"
+                  $ref: "#/components/schemas/BookListBody"
         400:
           $ref: '#/components/responses/400'
         403:
@@ -129,8 +127,7 @@ paths:
               items:
                 $ref: "#/components/schemas/Author"
       responses:
-        200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+
         400:
           $ref: '#/components/responses/400'
         403:
@@ -151,8 +148,7 @@ paths:
           schema:
             type: string
       responses:
-        200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+
         400:
           $ref: '#/components/responses/400'
         403:
@@ -181,18 +177,16 @@ paths:
                   - "bookId"
                   - "authorId"
       responses:
-        200:
-          $ref: '#/components/schemas/SuccessfulResponse'
+
         400:
           $ref: '#/components/responses/400'
         403:
           $ref: '#/components/responses/403'
         500:
           $ref: '#/components/responses/500'
-
   /import/book:
     post:
-      summary: Import book from JSON/excel file     
+      summary: Import book from JSON/excel file
       requestBody:
         required: true
         content:
@@ -218,11 +212,6 @@ paths:
   /import/author:
     post:
       summary: Import author from Excel or JSON file
-      parameters:
-        - name: file
-          in: formData
-          required: true
-          type: file
       requestBody:
         required: true
         content:
@@ -231,7 +220,7 @@ paths:
               $ref: "#/components/schemas/ImportDataAuthor"
       responses:
         '200':
-          description: Succès
+          description:  OK
           content:
             application/json:
               schema:
@@ -239,57 +228,21 @@ paths:
                 properties:
                   message:
                     type: string
-schemas:
-    ResponseBodyTemplate:
+components:
+  schemas:
+    CrupdateTopic:
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/ResponsesStatus'
-        body:
-          type: object
-    ResponsesStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 200
-        message:
+        topicName:
           type: string
-    BadRequest:
+    Topic:
+      type: object
       allOf:
-        - $ref: '#/components/schemas/ResponseBodyTemplate'
-      example:
-        status:
-          code: 400
-          message: BAD REQUEST
-        body: {}
-
-    ForbiddenOperation:
-      allOf:
-        - $ref: '#/components/schemas/ResponseBodyTemplate'
-      example:
-        status:
-          code: 403
-          message: FORBIDDEN
-        body: {}
-
-    InternalServerError:
-      allOf:
-        - $ref: '#/components/schemas/ResponseBodyTemplate'
-      example:
-        status:
-          code: 500
-          message: Internal Server Error
-        body: {}
-    BookListBody:
-      description:  List of books
-      allOf:
-        - $ref: '#/components/schemas/ResponseBodyTemplate'
         - properties:
-            body:
-              type: array
-              items:
-                $ref: '#/components/schemas/Book'
+            id:
+              type: string
+        - $ref: "#/components/schemas/CrupdateTopic"
+
     CrupdateBooks:
       type: object
       properties:
@@ -347,6 +300,7 @@ schemas:
       required:
         - "bookId"
         - "authorId"
+
     ImportDataBook:
       type: object
       oneOf:
@@ -364,8 +318,7 @@ schemas:
       properties:
         excelFile:
           type: string
-          example: " application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          
+          example: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ImportDataAuthor:
       type: object
       oneOf:
@@ -385,7 +338,56 @@ schemas:
           type: string
           format: binary
           example: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ResponseBodyTemplate:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ResponsesStatus'
+        body:
+          type: object
+    ResponsesStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+    BadRequest:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 400
+          message: BAD REQUEST
+        body: {}
 
+    ForbiddenOperation:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 403
+          message: FORBIDDEN
+        body: {}
+
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 500
+          message: Internal Server Error
+        body: {}
+    BookListBody:
+      description:  List of books
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/Book'
   parameters:
     queryPage:
       in: query
@@ -411,7 +413,7 @@ schemas:
       schema:
         type: integer
         default: 50
-   responses:
+  responses:
     BookList_200:
       description: List of the books
       content:
