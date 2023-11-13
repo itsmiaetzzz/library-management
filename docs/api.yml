@@ -288,8 +288,6 @@ paths:
       - Visitors
     summary: Borrow a book
     description: Allows a visitor to borrow a book from the library.
-    security:
-      - admin_key: []
     operationId: borrowBook
     parameters:
       - name: visitorId
@@ -318,8 +316,6 @@ paths:
     tags:
       - Visitors
     summary: Return a book
-    security:
-      - oauth2: [ 'write' ]
     description: Allows a visitor to return a book to the library.
     operationId: returnBook
     parameters:
@@ -344,6 +340,51 @@ paths:
         $ref: '#/components/responses/403'
       500:
         $ref: '#/components/responses/500'
+  paths:
+  /visitors/{visitorId}/activities:
+    get:
+      tags:
+        - Visitors
+      summary: Visitor Activities
+      description: Get borrow and return activities of the specified visitor.
+      operationId: getVisitorActivities
+      parameters:
+        - name: visitorId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: Identifier of the visitor
+        - in: query
+          name: start
+          description: Start date to filter activities (format YYYY-MM-DDTHH:MM:SS)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: end
+          description: End date to filter activities (format YYYY-MM-DDTHH:MM:SS)
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: List of visitor activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VisitorActivities'
+        400:
+          $ref: '#/components/responses/400'
+        403:
+          $ref: '#/components/responses/403'
+        500:
+          $ref: '#/components/responses/500'
+
 
 components:
   schemas:
@@ -356,6 +397,35 @@ components:
           type: string
         reference:
           type: string
+    Activity:
+      type: object
+      properties:
+        loanId:
+          type: string
+          description: The ID of the loan made
+        bookId:
+          type: string
+          description: The ID of the borrowed or returned book
+        action:
+          type: string
+          enum:
+            - borrow
+            - return
+          description: The action performed: borrowing or returning
+        date:
+          type: string
+          format: date-time
+          description: Date and time of the action
+    VisitorActivities:
+      type: object
+      properties:
+        visitorId:
+          type: string
+          description: ID of the visitor
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
 
 
 
