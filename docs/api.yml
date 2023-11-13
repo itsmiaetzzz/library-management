@@ -414,29 +414,31 @@ schemas:
       schema:
         type: integer
         default: 50
-  responses:
-    '200':
-      description: Successful operation
+   responses:
+    BookList_200:
+      description: List of the books
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/SuccessfulResponse"
-    '400':
+            $ref: "#/components/schemas/BookListBody"
+    400:
       description: Bad request
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/badRequest"
-    '403':
+            $ref: "#/components/schemas/BadRequest"
+    403:
       description: Forbidden operation
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/forbiddenOperation"
-    '500':
-      description: Internal server error
+            $ref: "#/components/schemas/ForbiddenOperation"
+
+    500:
+      description: Internal Server Error
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/InternalServerError"
+
 
